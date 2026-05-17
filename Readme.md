@@ -28,15 +28,15 @@ Spring Boot
 
 ## Metrics Dashboard
 
-![metrics-dashboard](docs/screenshots/metrics-dashboard.png)
+![metrics-dashboard](src/main/resources/docs/screenshots/metrics-dashboard.png)
 
 ## Logs Dashboard
 
-![logs-dashboard](docs/screenshots/logs-dashboard.png)
+![logs-dashboard](src/main/resources/docs/screenshots/logs-dashboard.png)
 
 ## Tracing Dashboard
 
-![tracing-dashboard](docs/screenshots/tracing-dashboard.png)
+![tracing-dashboard](src/main/resources/docs/screenshots/tracing-dashboard.png)
 
 # Observability Features
 
