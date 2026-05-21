@@ -47,4 +47,10 @@ public class PaymentControllerImpl implements PaymentController {
         return ResponseEntity.accepted()
                 .body(new PaymentApiResponse(Collections.emptyList(), ""));
     }
+
+    @Override
+    public String test() {
+        return "WORKS";
+    }
+
 }

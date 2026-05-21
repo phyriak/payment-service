@@ -1,6 +1,20 @@
-
-
 services:
+
+  postgres:
+    image: postgres:16
+
+    container_name: postgres-db
+
+    environment:
+      POSTGRES_DB: payment
+      POSTGRES_USER: payment_user
+      POSTGRES_PASSWORD: uat-payment-password
+
+    ports:
+      - "5433:5432"
+
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
 
   prometheus:
     image: prom/prometheus
@@ -12,6 +26,9 @@ services:
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus-storage:/prometheus
+
+    extra_hosts:
+      - "payment.local:host-gateway"
 
   grafana:
     image: grafana/grafana
@@ -32,7 +49,6 @@ services:
       - tempo
       - loki
 
-
   tempo:
     image: grafana/tempo:latest
     container_name: tempo
@@ -44,10 +60,8 @@ services:
       - ./tempo.yml:/etc/tempo.yml
       - tempo-storage:/var/tempo
 
-
     ports:
       - "3200:3200"
-
 
   otel-collector:
     image: otel/opentelemetry-collector-contrib:latest
@@ -65,7 +79,6 @@ services:
     depends_on:
       - tempo
 
-
   loki:
     image: grafana/loki:latest
     container_name: loki
@@ -79,7 +92,6 @@ services:
     volumes:
       - ./loki-config.yml:/etc/loki/local-config.yaml
       - loki-storage:/loki
-
 
   promtail:
     image: grafana/promtail:latest
@@ -95,8 +107,8 @@ services:
     depends_on:
       - loki
 
-
 volumes:
+  postgres-data:
   grafana-storage:
   prometheus-storage:
   loki-storage:

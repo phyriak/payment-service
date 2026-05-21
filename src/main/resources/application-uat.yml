@@ -4,14 +4,33 @@ server:
 spring:
   application:
     name: payment-service
+
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5433/payment}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
   jpa:
+    show-sql: false
+    open-in-view: false
+
+    hibernate:
+      ddl-auto: update
+
     properties:
       hibernate:
+        default_schema: ${DB_SCHEMA}
         jdbc.batch_size: 1000
         order_inserts: true
         order_updates: true
-        generate_statistics: true
-        format_sql: false
+
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    schemas: ${DB_SCHEMA}
 
   batch:
     jdbc:
@@ -24,7 +43,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: info, health, prometheus
+        include: info,health,prometheus
 
   endpoint:
     health:
@@ -56,19 +75,16 @@ management:
         http.server.requests: true
 
       percentiles:
-        http.server.requests: 0.5, 0.95, 0.99
+        http.server.requests: 0.5,0.95,0.99
 
     tags:
       application: payment-service
 
 logging:
+  level:
+    org.hibernate.SQL: INFO
   file:
     name: logs/payment-service.log
 
-    pattern:
-      correlation: "[%X{traceId:-},%X{spanId:-}] "
-
 springdoc:
   show-actuator: true
-
-##http://localhost:8080/swagger-ui.html

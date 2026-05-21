@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+
+metadata:
+  name: payment-configmap-dev
+
+data:
+  APP_ENV: "dev"
+  SPRING_PROFILES_ACTIVE: "dev"
+  DB_URL: "jdbc:postgresql://host.docker.internal:5433/payment"
+  DB_USERNAME: "payment_user"
+  OTEL_ENDPOINT: "http://host.docker.internal:4320/v1/traces"
+  DB_SCHEMA: "payment_service_local"

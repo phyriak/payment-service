@@ -29,4 +29,9 @@ public interface PaymentController {
 
     @PostMapping("/")
     ResponseEntity<PaymentApiResponse> pay(@RequestBody PaymentRequest paymentRequest);
+
+
+    @GetMapping("/test")
+    String test();
+
 }

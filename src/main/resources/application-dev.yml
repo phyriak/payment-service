@@ -1,17 +1,37 @@
 server:
-  port: 8082
+  port: 8080
+
 
 spring:
   application:
     name: payment-service
+
+
+  datasource:
+    url: jdbc:h2:mem:mydb;INIT=CREATE SCHEMA IF NOT EXISTS BASE
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+
+
   jpa:
     properties:
       hibernate:
+        default_schema: BASE
         jdbc.batch_size: 1000
         order_inserts: true
-        order_updates: true
         generate_statistics: true
-        format_sql: false
+
+        ddl-auto: update
+    database-platform: org.hibernate.dialect.H2Dialect
+
 
   batch:
     jdbc:
@@ -19,6 +39,8 @@ spring:
 
     job:
       enabled: false
+
+
 
 management:
   endpoints:
@@ -30,7 +52,6 @@ management:
     health:
       probes:
         enabled: true
-
   health:
     livenessstate:
       enabled: true
@@ -44,6 +65,7 @@ management:
   otlp:
     tracing:
       endpoint: ${OTEL_ENDPOINT:http://localhost:4320/v1/traces}
+  ## 4318 for http, 4317 for grpc
 
   prometheus:
     metrics:
@@ -60,6 +82,7 @@ management:
 
     tags:
       application: payment-service
+
 
 logging:
   file:

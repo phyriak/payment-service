@@ -4,14 +4,30 @@ server:
 spring:
   application:
     name: payment-service
+
+  datasource:
+    url: jdbc:h2:mem:paymentdb;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;INIT=CREATE SCHEMA IF NOT EXISTS payment_service_local
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
   jpa:
+    show-sql: false
+    open-in-view: false
+
+    hibernate:
+      ddl-auto: update
+
     properties:
       hibernate:
-        jdbc.batch_size: 1000
-        order_inserts: true
-        order_updates: true
-        generate_statistics: true
-        format_sql: false
+        default_schema: payment_service_local
+
+    database-platform: org.hibernate.dialect.H2Dialect
 
   batch:
     jdbc:
@@ -24,7 +40,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: info, health, prometheus
+        include: info,health,prometheus
 
   endpoint:
     health:
@@ -43,7 +59,7 @@ management:
 
   otlp:
     tracing:
-      endpoint: ${OTEL_ENDPOINT:http://localhost:4320/v1/traces}
+      endpoint: http://localhost:4320/v1/traces
 
   prometheus:
     metrics:
@@ -56,7 +72,7 @@ management:
         http.server.requests: true
 
       percentiles:
-        http.server.requests: 0.5, 0.95, 0.99
+        http.server.requests: 0.5,0.95,0.99
 
     tags:
       application: payment-service
@@ -65,10 +81,9 @@ logging:
   file:
     name: logs/payment-service.log
 
-    pattern:
-      correlation: "[%X{traceId:-},%X{spanId:-}] "
+  level:
+    org.hibernate.SQL: INFO
+    org.hibernate.tool.schema: INFO
 
 springdoc:
   show-actuator: true
-
-##http://localhost:8080/swagger-ui.html

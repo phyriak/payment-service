@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+
+metadata:
+  name: payment-configmap-uat
+
+data:
+  APP_ENV: "uat"
+  SPRING_PROFILES_ACTIVE: "uat"
+  DB_URL: "jdbc:postgresql://host.docker.internal:5433/payment"
+  DB_USERNAME: "payment_user"
+  OTEL_ENDPOINT: "http://host.docker.internal:4320/v1/traces"
+  DB_SCHEMA: "payment_service_uat"
