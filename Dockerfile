@@ -2,8 +2,8 @@ FROM eclipse-temurin:21-jdk
 
 WORKDIR /payment-service
 
-COPY target/*.jar payment-service-2.9-SNAPSHOT.jar
+COPY target/*.jar app.jar
 
 EXPOSE 8082
 
-ENTRYPOINT ["java", "-jar", "payment-service-2.9-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
