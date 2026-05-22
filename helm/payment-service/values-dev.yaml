@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: payment-service
-  tag: "2.9"
+  tag: "3.0"
   pullPolicy: Never
 
 service:
