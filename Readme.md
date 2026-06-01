@@ -56,3 +56,24 @@ Spring Boot
 - Business metrics
 - Exemplars support
 - CI/CD integration
+
+## Current pipleline
+git push
+↓
+GitHub Actions
+↓
+mvn clean package
+↓
+docker build
+↓
+docker push phyriak/payment-service:latest
+↓
+SSH do Hetzner
+↓
+docker compose pull payment-service
+↓
+docker compose up -d payment-service
+↓
+health check
+↓
+SUCCESS ✅
