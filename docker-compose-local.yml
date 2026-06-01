@@ -1,31 +1,5 @@
 services:
 
-  payment-service:
-    container_name: payment-service
-    image: phyriak/payment-service:latest
-
-    ports:
-      - "8082:8082"
-  
-    
-
-    environment:
-      APP_ENV: uat
-      SPRING_PROFILES_ACTIVE: uat
-      DB_URL: jdbc:postgresql://postgres:5432/payment
-      OTEL_ENDPOINT: http://otel-collector:4318/v1/traces
-      DB_USERNAME: payment_user
-      DB_PASSWORD: uat-payment-password
-      DB_SCHEMA: payment_service_uat
-
-    restart: unless-stopped
-    
-    depends_on:
-     - postgres
-     - otel-collector
-
-    
-
   postgres:
     image: postgres:16
 
@@ -42,8 +16,6 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
 
-    restart: unless-stopped
-
   prometheus:
     image: prom/prometheus
     container_name: prometheus
@@ -55,9 +27,8 @@ services:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus-storage:/prometheus
 
-    
-    restart: unless-stopped
-  
+    extra_hosts:
+      - "payment.local:host-gateway"
 
   grafana:
     image: grafana/grafana
@@ -78,8 +49,6 @@ services:
       - tempo
       - loki
 
-    restart: unless-stopped
-
   tempo:
     image: grafana/tempo:latest
     container_name: tempo
@@ -93,8 +62,6 @@ services:
 
     ports:
       - "3200:3200"
-
-    restart: unless-stopped
 
   otel-collector:
     image: otel/opentelemetry-collector-contrib:latest
@@ -112,8 +79,6 @@ services:
     depends_on:
       - tempo
 
-    restart: unless-stopped
-
   loki:
     image: grafana/loki:latest
     container_name: loki
@@ -128,8 +93,6 @@ services:
       - ./loki-config.yml:/etc/loki/local-config.yaml
       - loki-storage:/loki
 
-    restart: unless-stopped
-
   promtail:
     image: grafana/promtail:latest
     container_name: promtail
@@ -143,8 +106,6 @@ services:
 
     depends_on:
       - loki
-
-    restart: unless-stopped
 
 volumes:
   postgres-data:
