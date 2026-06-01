@@ -59,5 +59,17 @@ jobs:
             docker compose pull payment-service
 
             docker compose up -d payment-service
+            
+            echo "Waiting for application..."
 
-            docker image prune -f
+            for i in {1..12}; do
+              if curl -f http://localhost:8082/actuator/health; then
+                echo "Application is UP"
+                exit 0
+              fi
+  
+              sleep 10
+            done
+
+            echo "Application failed to start"
+            exit 1
