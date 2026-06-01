@@ -38,3 +38,26 @@ jobs:
           tags: |
             phyriak/payment-service:${{ github.sha }}
             phyriak/payment-service:latest
+
+  deploy:
+
+    needs: build
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Deploy to Hetzner
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HETZNER_HOST }}
+          username: ${{ secrets.HETZNER_USER }}
+          key: ${{ secrets.HETZNER_SSH_KEY }}
+          script: |
+            cd /opt/apps/payment-service
+
+            docker compose pull payment-service
+
+            docker compose up -d payment-service
+
+            docker image prune -f
