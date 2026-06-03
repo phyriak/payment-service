@@ -1,4 +1,3 @@
-CREATE SCHEMA IF NOT EXISTS payment_service_uat;
 
 CREATE SEQUENCE IF NOT EXISTS payment_service_uat.base_seq
     START WITH 1
