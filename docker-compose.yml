@@ -11,7 +11,7 @@ services:
     environment:
       APP_ENV: uat
       SPRING_PROFILES_ACTIVE: uat
-      DB_URL: jdbc:postgresql://postgres-db:5432/ecommerce
+      DB_URL: jdbc:postgresql://postgres-db:5432/ecommerce?currentSchema=payment_service_uat
       DB_USERNAME: payment_user
       DB_PASSWORD: uat-payment-password
       DB_SCHEMA: payment_service_uat
