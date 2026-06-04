@@ -47,12 +47,14 @@ class PaymentServiceUnitTest {
     private ExecutorService executor;
     @Mock
     private PaymentStrategy paymentStrategy;
+    @Mock
+    private PaymentProcessor paymentProcessor;
 
     private PaymentService paymentService;
 
     @BeforeEach
     void setUp() {
-        paymentService = new PaymentService(paymentRepository, rateClient, paymentFactory, executor);
+        paymentService = new PaymentService(paymentRepository, rateClient, executor, paymentProcessor);
     }
 
     @Test

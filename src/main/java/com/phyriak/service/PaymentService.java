@@ -5,16 +5,12 @@ import com.phyriak.dto.NbpResponse;
 import com.phyriak.dto.PaymentDto;
 import com.phyriak.dto.PaymentRequest;
 import com.phyriak.exceptions.CurrencyNotFoundError;
-import com.phyriak.exceptions.PaymentIllegalStatus;
 import com.phyriak.exceptions.PaymentNotFoundException;
 import com.phyriak.mapper.PaymentMapper;
 import com.phyriak.repository.PaymentRepository;
 import com.phyriak.repository.model.Currency;
 import com.phyriak.repository.model.Payment;
 import com.phyriak.repository.model.PaymentStatus;
-import com.phyriak.strategy.PaymentFactory;
-import com.phyriak.strategy.PaymentStrategy;
-import com.phyriak.strategy.model.PaymentResult;
 import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
@@ -35,8 +31,9 @@ import java.util.concurrent.ExecutorService;
 public class PaymentService {
     private final PaymentRepository paymentRepository;
     private final NBPRateClient rateClient;
-    private final PaymentFactory paymentFactory;
     private final ExecutorService executor;
+    private final PaymentProcessor paymentProcessor;
+
 
     @Retryable(
             retryFor = ObjectOptimisticLockingFailureException.class,
@@ -56,31 +53,8 @@ public class PaymentService {
         paymentEntity.setPaymentStatus(PaymentStatus.IN_PROGRESS);
         Payment payment = paymentRepository.save(paymentEntity);
 
-        executor.submit(() -> processPaymentAsync(payment.getId()));
-    }
+        executor.submit(() -> paymentProcessor.processPaymentAsync(payment.getId()));
 
-    private void processPaymentAsync(Long paymentId) {
-        log.info("Processing async payment {}", paymentId);
-
-        Payment payment = paymentRepository.findById(paymentId)
-                .orElseThrow(() -> new PaymentNotFoundException("Payment with id= " + paymentId + " not found!"));
-
-        PaymentStrategy strategy = paymentFactory.getStrategy(payment.getPaymentType());
-        if (strategy == null) {
-            payment.setPaymentStatus(PaymentStatus.FAILED);
-            paymentRepository.save(payment);
-            throw new PaymentIllegalStatus("Wrong Payment Type: " + payment.getPaymentType());
-        }
-        PaymentResult result = strategy.processPayment(payment.getId());
-
-        if (result.success()) {
-            payment.setPaymentStatus(PaymentStatus.PAID);
-            log.info("Payment success {}", paymentId);
-        } else {
-            payment.setPaymentStatus(PaymentStatus.FAILED);
-            log.error("Payment failed: {}", payment.getId());
-        }
-        paymentRepository.save(payment);
     }
 
     private void setPaymentAmountIfIsNotInPLN(PaymentRequest paymentRequest, Payment payment) {

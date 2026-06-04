@@ -123,6 +123,14 @@
             <version>2.8.6</version>
         </dependency>
 
+        <!-- KAFKA -->
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+            <version>4.0.5</version>
+            <scope>compile</scope>
+        </dependency>
+
 
         <!-- TEST -->
         <dependency>
