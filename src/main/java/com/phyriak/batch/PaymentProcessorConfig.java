@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class PaymentProcessorConfig {
     @Bean
-    public org.springframework.batch.item.ItemProcessor<PaymentCsvDto, Payment> paymentProcessor() {
+    public org.springframework.batch.item.ItemProcessor<PaymentCsvDto, Payment> csvPaymentProcessor() {
 
         return dto -> {
 
