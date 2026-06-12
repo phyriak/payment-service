@@ -2,6 +2,7 @@ package com.phyriak.service;
 
 import com.phyriak.config.NBPRateClient;
 import com.phyriak.dto.PaymentRequest;
+import com.phyriak.exceptions.PaymentIllegalStatus;
 import com.phyriak.repository.PaymentRepository;
 import com.phyriak.repository.model.Payment;
 import com.phyriak.repository.model.PaymentStatus;
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -26,9 +28,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
@@ -38,7 +38,7 @@ class PaymentServiceUnitTest {
     private PaymentRepository paymentRepository;
     @Mock
     private NBPRateClient rateClient;
-    @Mock
+    @MockitoBean
     private PaymentFactory paymentFactory;
     @Mock
     private ExecutorService executor;
@@ -72,7 +72,8 @@ class PaymentServiceUnitTest {
         verify(executor, never()).submit(any(Runnable.class));
     }
 
-    @Test
+    //todo move to process payment
+ /*   @Test
     void shouldMarkPaymentAsFailedWhenStrategyIsMissing() {
         AtomicReference<Payment> storedPayment = new AtomicReference<>();
         when(paymentRepository.save(any(Payment.class))).thenAnswer(invocation -> {
@@ -85,6 +86,7 @@ class PaymentServiceUnitTest {
         });
         when(paymentRepository.findById(1L)).thenAnswer(invocation -> Optional.ofNullable(storedPayment.get()));
         when(paymentFactory.getStrategy(PaymentType.CARD)).thenReturn(null);
+        when(paymentProcessor.processPaymentAsync(anyLong())).thenThrow(new PaymentIllegalStatus(""));
         when(executor.submit(any(Runnable.class))).thenAnswer(invocation -> {
             Runnable task = invocation.getArgument(0);
             task.run();
@@ -101,8 +103,8 @@ class PaymentServiceUnitTest {
         );
 
         //todo moved to Payment proccesor
-        // assertThrows(PaymentIllegalStatus.class, () -> paymentService.pay(request));
-    }
+         assertThrows(PaymentIllegalStatus.class, () -> paymentService.pay(request));
+    }*/
 
    /* @Test
     void shouldMarkPaymentAsFailedWhenStrategyThrowsException() {
@@ -149,9 +151,6 @@ class PaymentServiceUnitTest {
             storedPayment.set(payment);
             return payment;
         });
-        when(paymentRepository.findById(1L)).thenAnswer(invocation -> Optional.ofNullable(storedPayment.get()));
-        when(paymentFactory.getStrategy(PaymentType.BLIK)).thenReturn(paymentMethod);
-       // when(paymentStrategy.processPayment(1L)).thenReturn(new PaymentResult(true, "ok"));
         when(executor.submit(any(Runnable.class))).thenAnswer(invocation -> {
             Runnable task = invocation.getArgument(0);
             task.run();

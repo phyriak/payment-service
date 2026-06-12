@@ -1,20 +1,41 @@
 package com.phyriak.service;
 
+import com.phyriak.config.NBPRateClient;
 import com.phyriak.repository.PaymentRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+
+import java.util.concurrent.ExecutorService;
 
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 class PaymentServiceTest {
-    @Autowired
+
+    @Mock
+    private PaymentProcessor paymentProcessor;
+
+    @Mock
+    private PaymentRepository paymentRepository;
+
+    @Mock
+    private NBPRateClient rateClient;
+    @Mock
+    private ExecutorService executor;
     private PaymentService paymentService;
 
-    @Autowired
-    private PaymentRepository paymentRepository;
+
+    @BeforeEach
+    void setUp() {
+        paymentService = new PaymentService(paymentRepository, rateClient, executor, paymentProcessor);
+    }
 
     @Test
     void pay() {
