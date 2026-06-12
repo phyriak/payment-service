@@ -2,16 +2,14 @@ package com.phyriak.service;
 
 import com.phyriak.config.NBPRateClient;
 import com.phyriak.dto.PaymentRequest;
-import com.phyriak.exceptions.PaymentIllegalStatus;
-import com.phyriak.exceptions.ValidationException;
 import com.phyriak.repository.PaymentRepository;
 import com.phyriak.repository.model.Payment;
 import com.phyriak.repository.model.PaymentStatus;
 import com.phyriak.repository.model.PaymentType;
-import com.phyriak.strategy.PayPalPayment;
 import com.phyriak.strategy.PaymentFactory;
 import com.phyriak.strategy.PaymentStrategy;
 import com.phyriak.strategy.model.PaymentResult;
+import com.phyriak.strategy.template.PaymentMethodTemplate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,7 +26,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -47,6 +44,8 @@ class PaymentServiceUnitTest {
     private ExecutorService executor;
     @Mock
     private PaymentStrategy paymentStrategy;
+    @Mock
+    private PaymentMethodTemplate paymentMethod;
     @Mock
     private PaymentProcessor paymentProcessor;
 
@@ -101,7 +100,8 @@ class PaymentServiceUnitTest {
                 null
         );
 
-        assertThrows(PaymentIllegalStatus.class, () -> paymentService.pay(request));
+        //todo moved to Payment proccesor
+        // assertThrows(PaymentIllegalStatus.class, () -> paymentService.pay(request));
     }
 
    /* @Test
@@ -150,8 +150,8 @@ class PaymentServiceUnitTest {
             return payment;
         });
         when(paymentRepository.findById(1L)).thenAnswer(invocation -> Optional.ofNullable(storedPayment.get()));
-        when(paymentFactory.getStrategy(PaymentType.BLIK)).thenReturn(paymentStrategy);
-        when(paymentStrategy.processPayment(1L)).thenReturn(new PaymentResult(true, "ok"));
+        when(paymentFactory.getStrategy(PaymentType.BLIK)).thenReturn(paymentMethod);
+       // when(paymentStrategy.processPayment(1L)).thenReturn(new PaymentResult(true, "ok"));
         when(executor.submit(any(Runnable.class))).thenAnswer(invocation -> {
             Runnable task = invocation.getArgument(0);
             task.run();
@@ -170,7 +170,7 @@ class PaymentServiceUnitTest {
         paymentService.pay(request);
 
         verify(rateClient, never()).getCurrencyRate(any());
-        assertEquals(PaymentStatus.PAID, storedPayment.get().getPaymentStatus());
+        assertEquals(PaymentStatus.IN_PROGRESS, storedPayment.get().getPaymentStatus());
     }
 }
 

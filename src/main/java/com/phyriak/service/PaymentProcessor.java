@@ -9,8 +9,8 @@ import com.phyriak.repository.PaymentRepository;
 import com.phyriak.repository.model.Payment;
 import com.phyriak.repository.model.PaymentStatus;
 import com.phyriak.strategy.PaymentFactory;
-import com.phyriak.strategy.PaymentStrategy;
 import com.phyriak.strategy.model.PaymentResult;
+import com.phyriak.strategy.template.PaymentMethodTemplate;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,13 +35,13 @@ public class PaymentProcessor {
         Payment payment = paymentRepository.findById(paymentId)
                 .orElseThrow(() -> new PaymentNotFoundException("Payment with id= " + paymentId + " not found!"));
 
-        PaymentStrategy strategy = paymentFactory.getStrategy(payment.getPaymentType());
-        if (strategy == null) {
+        PaymentMethodTemplate paymentMethod = paymentFactory.getStrategy(payment.getPaymentType());
+        if (paymentMethod == null) {
             payment.setPaymentStatus(PaymentStatus.FAILED);
             paymentRepository.save(payment);
             throw new PaymentIllegalStatus("Wrong Payment Type: " + payment.getPaymentType());
         }
-        PaymentResult result = strategy.processPayment(payment.getId());
+        PaymentResult result = paymentMethod.processPayment(payment.getId());
 
         if (result.success()) {
             payment.setPaymentStatus(PaymentStatus.PAID);
