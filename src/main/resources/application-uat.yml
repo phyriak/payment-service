@@ -5,6 +5,13 @@ spring:
   application:
     name: payment-service
 
+  kafka:
+    bootstrap-servers: kafka:9092
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
   datasource:
     url: ${DB_URL:jdbc:postgresql://localhost:5433/ecommerce?currentSchema=${DB_SCHEMA}}
     username: ${DB_USERNAME}
