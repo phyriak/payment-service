@@ -22,6 +22,7 @@ public class Payment extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Currency currency;
     private Long userId;
+    private String userEmail;
     @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;
     @Enumerated(EnumType.STRING)

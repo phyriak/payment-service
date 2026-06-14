@@ -1,0 +1,70 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-create-product-order
+      author: phyriak
+
+      changes:
+        - createTable:
+            tableName: product_order
+
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: version
+                  type: bigint
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: created_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: created_by
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: updated_by
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: details
+                  type: varchar(2000)
+
+              - column:
+                  name: amount
+                  type: numeric(10,2)
+
+              - column:
+                  name: payment_id
+                  type: bigint
+
+        - addForeignKeyConstraint:
+            baseTableName: product_order
+            baseColumnNames: payment_id
+            referencedTableName: payment
+            referencedColumnNames: id
+            constraintName: fk_product_order_payment
+
+        - addUniqueConstraint:
+            tableName: product_order
+            columnNames: payment_id
+            constraintName: uk_product_order_payment

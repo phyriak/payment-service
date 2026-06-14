@@ -23,7 +23,7 @@ spring:
     open-in-view: false
 
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
 
     properties:
       hibernate:
@@ -34,10 +34,12 @@ spring:
 
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
-  flyway:
+
+  liquibase:
     enabled: true
-    baseline-on-migrate: true
-    schemas: ${DB_SCHEMA}
+    change-log: classpath:db/changelog/db/changelog-master.yaml
+    default-schema: ${DB_SCHEMA}
+    liquibase-schema: ${DB_SCHEMA}
 
   batch:
     jdbc:

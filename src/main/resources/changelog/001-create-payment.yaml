@@ -1,0 +1,75 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-payment
+      author: phyriak
+
+      changes:
+        - createSequence:
+            sequenceName: base_seq
+            startValue: 1
+            incrementBy: 50
+
+        - createTable:
+            tableName: payment
+
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: version
+                  type: bigint
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: created_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: created_by
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: updated_by
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: amount
+                  type: numeric(10,2)
+
+              - column:
+                  name: currency
+                  type: varchar(50)
+
+              - column:
+                  name: user_id
+                  type: bigint
+
+              - column:
+                  name: user_email
+                  type: varchar(255)
+
+              - column:
+                  name: payment_status
+                  type: varchar(50)
+
+              - column:
+                  name: payment_type
+                  type: varchar(50)

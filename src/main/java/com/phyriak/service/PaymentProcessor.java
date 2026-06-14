@@ -71,12 +71,13 @@ public class PaymentProcessor {
         return new PaymentProcessedEvent(
                 UUID.randomUUID(),
                 payment.getId(),
+                payment.getUserId(),
+                payment.getOrder().getId(),
                 payment.getPaymentStatus(),
-                null,
                 payment.getAmount(),
                 payment.getCurrency().toString(),
                 Instant.now(),
-                "piotr1hyriak@gmail.com");
+                payment.getUserEmail());
 
     }
 
@@ -84,10 +85,12 @@ public class PaymentProcessor {
         return new PaymentFailedEvent(
                 UUID.randomUUID(),
                 payment.getId(),
+                payment.getUserId(),
+                payment.getOrder().getId(),
                 payment.getPaymentStatus(),
-                null,
                 payment.getAmount(),
                 payment.getCurrency().toString(),
-                Instant.now());
+                Instant.now(),
+                payment.getUserEmail());
     }
 }

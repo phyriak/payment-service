@@ -10,6 +10,7 @@ public record PaymentRequest(
         String currency,
         BigDecimal amount,
         String userId,
+        String userEmail,
         PaymentType paymentType,
         PaymentStatus paymentStatus
 ) {
