@@ -2,14 +2,12 @@ package com.phyriak.service;
 
 import com.phyriak.config.NBPRateClient;
 import com.phyriak.dto.PaymentRequest;
-import com.phyriak.exceptions.PaymentIllegalStatus;
 import com.phyriak.repository.PaymentRepository;
 import com.phyriak.repository.model.Payment;
 import com.phyriak.repository.model.PaymentStatus;
 import com.phyriak.repository.model.PaymentType;
 import com.phyriak.strategy.PaymentFactory;
 import com.phyriak.strategy.PaymentStrategy;
-import com.phyriak.strategy.model.PaymentResult;
 import com.phyriak.strategy.template.PaymentMethodTemplate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +18,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicReference;
@@ -34,6 +31,7 @@ import static org.mockito.Mockito.*;
 @ActiveProfiles("test")
 class PaymentServiceUnitTest {
 
+    public static final String TEST_EMAIL = "dummy@test.pl";
     @Mock
     private PaymentRepository paymentRepository;
     @Mock
@@ -63,8 +61,9 @@ class PaymentServiceUnitTest {
                 null,
                 BigDecimal.TEN,
                 "1",
+                TEST_EMAIL,
                 PaymentType.BLIK,
-                null
+                PaymentStatus.PAID
         );
 
         assertThrows(NullPointerException.class, () -> paymentService.pay(request));
@@ -162,8 +161,9 @@ class PaymentServiceUnitTest {
                 "PLN",
                 new BigDecimal("4.99"),
                 "42",
+                TEST_EMAIL,
                 PaymentType.BLIK,
-                null
+                PaymentStatus.PAID
         );
 
         paymentService.pay(request);
