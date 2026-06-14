@@ -68,15 +68,6 @@ public class PaymentProcessor {
     }
 
     private PaymentProcessedEvent getPaymentProcessedEvent(Payment payment) {
-        log.info("Creating PaymentProcessedEvent for payment={}", payment.getId());
-
-        if (payment.getOrder() == null) {
-            log.error("Order is NULL for payment={}", payment.getId());
-        } else {
-            log.info("Order id={}", payment.getOrder().getId());
-        }
-
-
         return new PaymentProcessedEvent(
                 UUID.randomUUID(),
                 payment.getId(),
@@ -91,14 +82,6 @@ public class PaymentProcessor {
     }
 
     private PaymentFailedEvent getPaymentFailedEvent(Payment payment) {
-        log.info("Creating PaymentProcessedEvent for payment={}", payment.getId());
-
-        if (payment.getOrder() == null) {
-            log.error("Order is NULL for payment={}", payment.getId());
-        } else {
-            log.info("Order id={}", payment.getOrder().getId());
-        }
-
         return new PaymentFailedEvent(
                 UUID.randomUUID(),
                 payment.getId(),

@@ -11,6 +11,7 @@ public record PaymentRequest(
         BigDecimal amount,
         String userId,
         String userEmail,
+        String orderId,
         PaymentType paymentType,
         PaymentStatus paymentStatus
 ) {

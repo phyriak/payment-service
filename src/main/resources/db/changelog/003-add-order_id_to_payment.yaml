@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-add-order_id_to_payment
+      author: phyriak
+
+      changes:
+        - addColumn:
+            tableName: payment
+            columns:
+              - column:
+                  name: order_id
+                  type: bigint
