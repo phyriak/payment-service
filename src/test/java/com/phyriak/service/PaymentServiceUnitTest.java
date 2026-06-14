@@ -32,6 +32,7 @@ import static org.mockito.Mockito.*;
 class PaymentServiceUnitTest {
 
     public static final String TEST_EMAIL = "dummy@test.pl";
+    public static final String ORDER_ID = "2132131";
     @Mock
     private PaymentRepository paymentRepository;
     @Mock
@@ -62,6 +63,7 @@ class PaymentServiceUnitTest {
                 BigDecimal.TEN,
                 "1",
                 TEST_EMAIL,
+                ORDER_ID,
                 PaymentType.BLIK,
                 PaymentStatus.PAID
         );
@@ -162,6 +164,7 @@ class PaymentServiceUnitTest {
                 new BigDecimal("4.99"),
                 "42",
                 TEST_EMAIL,
+                ORDER_ID,
                 PaymentType.BLIK,
                 PaymentStatus.PAID
         );
