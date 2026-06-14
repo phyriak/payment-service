@@ -91,7 +91,7 @@ management:
 
 logging:
   level:
-    org.hibernate.SQL: INFO
+    org.hibernate.SQL: ERROR
   file:
     name: logs/payment-service.log
 
