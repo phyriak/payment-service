@@ -10,7 +10,7 @@ spring:
         jdbc.batch_size: 1000
         order_inserts: true
         order_updates: true
-        generate_statistics: true
+        generate_statistics: false
         format_sql: false
 
   batch:
