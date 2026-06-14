@@ -66,6 +66,7 @@ public class PaymentProcessor {
         }
     }
 
+    //TODO email hardcoded only for test
     private PaymentProcessedEvent getPaymentProcessedEvent(Payment payment) {
         return new PaymentProcessedEvent(
                 UUID.randomUUID(),
@@ -74,7 +75,9 @@ public class PaymentProcessor {
                 null,
                 payment.getAmount(),
                 payment.getCurrency().toString(),
-                Instant.now());
+                Instant.now(),
+                "piotr1hyriak@gmail.com");
+
     }
 
     private PaymentFailedEvent getPaymentFailedEvent(Payment payment) {
