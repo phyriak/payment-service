@@ -59,6 +59,7 @@ public class PaymentProcessor {
     }
 
     private void publishPaymentEvent(PaymentResult result, Payment payment) {
+        log.info("Event of payment {},  publishing", payment.getId());
         if (result.success()) {
             eventPublisher.publishPaymentProcessed(getPaymentProcessedEvent(payment));
         } else {
@@ -66,7 +67,6 @@ public class PaymentProcessor {
         }
     }
 
-    //TODO email hardcoded only for test
     private PaymentProcessedEvent getPaymentProcessedEvent(Payment payment) {
         return new PaymentProcessedEvent(
                 UUID.randomUUID(),

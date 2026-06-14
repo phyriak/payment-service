@@ -14,12 +14,28 @@ public class PaymentEventPublisher {
 
     public void publishPaymentProcessed(PaymentProcessedEvent event) {
         log.info("Publishing payment event: {}", event);
+
         kafkaTemplate.send(
                 "payment",
-                //all payment event goes to the same partition, ordering guaranteed per payment
                 event.paymentId().toString(),
                 event
-        );
+        ).whenComplete((result, ex) -> {
+
+            if (ex != null) {
+                log.error(
+                        "Failed to publish payment event {}",
+                        event.eventId(),
+                        ex
+                );
+            } else {
+                log.info(
+                        "Payment event published. topic={}, partition={}, offset={}",
+                        result.getRecordMetadata().topic(),
+                        result.getRecordMetadata().partition(),
+                        result.getRecordMetadata().offset()
+                );
+            }
+        });
     }
 
     public void publishPaymentFailed(PaymentFailedEvent event) {
