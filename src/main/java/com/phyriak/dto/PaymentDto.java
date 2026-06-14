@@ -23,6 +23,10 @@ public record PaymentDto(
         @NotBlank
         Long userId,
         @NotBlank
+        String userEmail,
+        @NotBlank
+        Long orderId,
+        @NotBlank
         LocalDateTime updatedAt,
         @NotBlank
         PaymentType paymentType,
