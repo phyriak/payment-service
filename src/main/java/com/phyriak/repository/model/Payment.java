@@ -23,11 +23,9 @@ public class Payment extends BaseEntity {
     private Currency currency;
     private Long userId;
     private String userEmail;
+    private Long orderId;
     @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;
     @Enumerated(EnumType.STRING)
     private PaymentType paymentType;
-
-    @OneToOne(mappedBy = "payment")
-    private ProductOrder order;
 }

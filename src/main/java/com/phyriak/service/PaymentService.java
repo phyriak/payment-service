@@ -11,6 +11,7 @@ import com.phyriak.repository.PaymentRepository;
 import com.phyriak.repository.model.Currency;
 import com.phyriak.repository.model.Payment;
 import com.phyriak.repository.model.PaymentStatus;
+import com.phyriak.repository.model.ProductOrder;
 import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;

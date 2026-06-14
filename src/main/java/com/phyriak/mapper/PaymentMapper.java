@@ -14,11 +14,11 @@ public interface PaymentMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "version", ignore = true)
-    @Mapping(target = "order.id", source = "orderId")
+    @Mapping(target = "orderId", source = "orderId")
     Payment paymentRequestToEntity(PaymentRequest paymentRequest);
 
     @Mapping(target = "paymentStatus", source = "paymentStatus")
     @Mapping(target = "amount", source = "amount")
-    @Mapping(target = "orderId", source = "order.id")
+    @Mapping(target = "orderId", source = "orderId")
     PaymentDto paymentEntityToPaymentDto(Payment payment);
 }
