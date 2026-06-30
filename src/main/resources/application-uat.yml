@@ -60,7 +60,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: info,health,prometheus
+        include: info,health,prometheus, metrics
 
   endpoint:
     health:
