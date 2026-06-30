@@ -28,9 +28,4 @@ COPY jmx/config.yml /opt/jmx/config.yml
 EXPOSE 8082
 EXPOSE 9404
 
-ENTRYPOINT [
-  "java",
-  "-javaagent:/opt/jmx/jmx_prometheus_javaagent.jar=9404:/opt/jmx/config.yml",
-  "-jar",
-  "app.jar"
-]
+ENTRYPOINT ["java", "-javaagent:/opt/jmx/jmx_prometheus_javaagent.jar=9404:/opt/jmx/config.yml", "-jar", "app.jar"]
