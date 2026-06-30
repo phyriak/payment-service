@@ -23,7 +23,7 @@ RUN apt-get update && apt-get install -y curl && \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/*
 
-COPY jmx/config.yml /opt/jmx/config.yml
+COPY monitoring/jmx/config.yml /opt/jmx/config.yml
 
 EXPOSE 8082
 EXPOSE 9404
