@@ -18,7 +18,7 @@ RUN apt-get update && \
     apt-get install -y curl && \
     mkdir -p /opt/jmx && \
     curl -fSL \
-      https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/1.2.0/jmx_prometheus_javaagent-1.2.0.jar \
+      https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/1.0.1/jmx_prometheus_javaagent-1.0.1.jar \
       -o /opt/jmx/jmx_prometheus_javaagent.jar && \
     file /opt/jmx/jmx_prometheus_javaagent.jar && \
     ls -lh /opt/jmx
