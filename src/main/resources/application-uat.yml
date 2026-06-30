@@ -64,7 +64,6 @@ management:
           -info
           -health
           -prometheus
-          -metrics
 
   endpoint:
     health:

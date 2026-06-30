@@ -6,6 +6,7 @@ services:
 
     ports:
       - "8082:8082"
+      - "9404:9404"
   
 
     environment:
