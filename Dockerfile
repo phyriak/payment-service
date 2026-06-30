@@ -20,7 +20,6 @@ RUN apt-get update && \
     curl -fSL \
       https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/1.0.1/jmx_prometheus_javaagent-1.0.1.jar \
       -o /opt/jmx/jmx_prometheus_javaagent.jar && \
-    file /opt/jmx/jmx_prometheus_javaagent.jar && \
     ls -lh /opt/jmx
 
 COPY monitoring/jmx/config.yml /opt/jmx/config.yml
