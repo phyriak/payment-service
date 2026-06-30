@@ -14,14 +14,14 @@ WORKDIR /app
 COPY --from=builder /app/target/*.jar app.jar
 
 # Pobranie JMX Exportera
-RUN apt-get update && apt-get install -y curl && \
+RUN apt-get update && \
+    apt-get install -y curl && \
     mkdir -p /opt/jmx && \
-    curl -L \
+    curl -fSL \
       https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/1.2.0/jmx_prometheus_javaagent-1.2.0.jar \
       -o /opt/jmx/jmx_prometheus_javaagent.jar && \
-    apt-get purge -y curl && \
-    apt-get autoremove -y && \
-    rm -rf /var/lib/apt/lists/*
+    file /opt/jmx/jmx_prometheus_javaagent.jar && \
+    ls -lh /opt/jmx
 
 COPY monitoring/jmx/config.yml /opt/jmx/config.yml
 
