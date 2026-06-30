@@ -63,7 +63,8 @@
                       "group": "prometheus",
                       "version": "v0",
                       "datasource": {
-                        "name": "ffmc2yqdt4zy8a"
+                        "type": "prometheus",
+                        "uid": "prometheus"
                       },
                       "spec": {
                         "disableTextWrap": false,
@@ -157,7 +158,8 @@
                       "group": "prometheus",
                       "version": "v0",
                       "datasource": {
-                        "name": "ffmc2yqdt4zy8a"
+                        "type": "prometheus",
+                        "uid": "prometheus"
                       },
                       "spec": {
                         "editorMode": "code",
@@ -245,7 +247,8 @@
                       "group": "prometheus",
                       "version": "v0",
                       "datasource": {
-                        "name": "ffmc2yqdt4zy8a"
+                        "type": "prometheus",
+                        "uid": "prometheus"
                       },
                       "spec": {
                         "editorMode": "code",
@@ -333,7 +336,8 @@
                       "group": "prometheus",
                       "version": "v0",
                       "datasource": {
-                        "name": "ffmc2yqdt4zy8a"
+                        "type": "prometheus",
+                        "uid": "prometheus"
                       },
                       "spec": {
                         "editorMode": "code",
@@ -421,7 +425,8 @@
                       "group": "prometheus",
                       "version": "v0",
                       "datasource": {
-                        "name": "ffmc2yqdt4zy8a"
+                        "type": "prometheus",
+                        "uid": "prometheus"
                       },
                       "spec": {
                         "editorMode": "code",
@@ -510,7 +515,8 @@
                       "group": "prometheus",
                       "version": "v0",
                       "datasource": {
-                        "name": "ffmc2yqdt4zy8a"
+                        "type": "prometheus",
+                        "uid": "prometheus"
                       },
                       "spec": {
                         "editorMode": "code",
@@ -597,7 +603,8 @@
                       "group": "prometheus",
                       "version": "v0",
                       "datasource": {
-                        "name": "ffmc2yqdt4zy8a"
+                        "type": "prometheus",
+                        "uid": "prometheus"
                       },
                       "spec": {
                         "editorMode": "code",
@@ -715,7 +722,8 @@
                       "group": "prometheus",
                       "version": "v0",
                       "datasource": {
-                        "name": "ffmc2yqdt4zy8a"
+                        "type": "prometheus",
+                        "uid": "prometheus"
                       },
                       "spec": {
                         "editorMode": "code",
@@ -829,7 +837,8 @@
                       "group": "prometheus",
                       "version": "v0",
                       "datasource": {
-                        "name": "ffmc2yqdt4zy8a"
+                        "type": "prometheus",
+                        "uid": "prometheus"
                       },
                       "spec": {
                         "editorMode": "code",
@@ -942,7 +951,8 @@
                       "group": "prometheus",
                       "version": "v0",
                       "datasource": {
-                        "name": "ffmc2yqdt4zy8a"
+                        "type": "prometheus",
+                        "uid": "prometheus"
                       },
                       "spec": {
                         "editorMode": "code",
@@ -1056,7 +1066,8 @@
                       "group": "prometheus",
                       "version": "v0",
                       "datasource": {
-                        "name": "ffmc2yqdt4zy8a"
+                        "type": "prometheus",
+                        "uid": "prometheus"
                       },
                       "spec": {
                         "editorMode": "code",
@@ -1152,7 +1163,8 @@
                       "group": "prometheus",
                       "version": "v0",
                       "datasource": {
-                        "name": "ffmc2yqdt4zy8a"
+                        "type": "prometheus",
+                        "uid": "prometheus"
                       },
                       "spec": {
                         "editorMode": "code",
@@ -1245,7 +1257,8 @@
                       "group": "prometheus",
                       "version": "v0",
                       "datasource": {
-                        "name": "ffmc2yqdt4zy8a"
+                        "type": "prometheus",
+                        "uid": "prometheus"
                       },
                       "spec": {
                         "editorMode": "code",
@@ -1337,7 +1350,8 @@
                       "group": "prometheus",
                       "version": "v0",
                       "datasource": {
-                        "name": "ffmc2yqdt4zy8a"
+                        "type": "prometheus",
+                        "uid": "prometheus"
                       },
                       "spec": {
                         "disableTextWrap": false,
@@ -1439,7 +1453,8 @@
                       "group": "prometheus",
                       "version": "v0",
                       "datasource": {
-                        "name": "ffmc2yqdt4zy8a"
+                        "type": "prometheus",
+                        "uid": "prometheus"
                       },
                       "spec": {
                         "disableTextWrap": false,
@@ -1541,7 +1556,8 @@
                       "group": "prometheus",
                       "version": "v0",
                       "datasource": {
-                        "name": "ffmc2yqdt4zy8a"
+                        "type": "prometheus",
+                        "uid": "prometheus"
                       },
                       "spec": {
                         "disableTextWrap": false,
