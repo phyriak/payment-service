@@ -9,6 +9,9 @@ server:
 
     max-connections: 200
 
+    mbeanregistry:
+      enabled: true
+
 spring:
   application:
     name: payment-service
