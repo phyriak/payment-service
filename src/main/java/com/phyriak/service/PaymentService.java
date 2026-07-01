@@ -5,6 +5,7 @@ import com.phyriak.dto.NbpResponse;
 import com.phyriak.dto.PaymentDto;
 import com.phyriak.dto.PaymentRequest;
 import com.phyriak.exceptions.CurrencyNotFoundError;
+import com.phyriak.exceptions.DatabaseUnavailableException;
 import com.phyriak.exceptions.PaymentNotFoundException;
 import com.phyriak.exceptions.ServiceOverloadedException;
 import com.phyriak.mapper.PaymentMapper;
@@ -86,18 +87,23 @@ public class PaymentService {
                 .toList();
     }
 
-    @Bulkhead(name = "database", type = Bulkhead.Type.SEMAPHORE, fallbackMethod = "getPaymentFallback")
-    @CircuitBreaker(name = "database", fallbackMethod = "getPaymentFallback")
+    @Bulkhead(name = "database", type = Bulkhead.Type.SEMAPHORE, fallbackMethod = "bulkheadFallback")
+    @CircuitBreaker(name = "database", fallbackMethod = "circuitBreakerFallback")
     public Payment getPaymentById(Long id) {
         return paymentRepository.findById(id)
                 .orElseThrow(() -> new PaymentNotFoundException("Payment with id: " + id + " does not exist!"));
     }
 
-    public Payment getPaymentFallback(Long id, Throwable ex) {
-        log.error("Fallback executed for id={}", id, ex);
-
+    public Payment bulkheadFallback(Long id, BulkheadFullException ex) {
         throw new ServiceOverloadedException(
-                "Payment service is temporarily overloaded",
+                "Payment service is overloaded",
+                ex
+        );
+    }
+
+    public Payment circuitBreakerFallback(Long id, Throwable ex) {
+        throw new DatabaseUnavailableException(
+                "Database is temporarily unavailable",
                 ex
         );
     }

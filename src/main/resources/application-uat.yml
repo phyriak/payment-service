@@ -42,6 +42,8 @@ spring:
           minimumNumberOfCalls: 10
           ignoreExceptions:
             - com.example.exception.PaymentNotFoundException
+            - io.github.resilience4j.bulkhead.BulkheadFullException
+            - com.phyriak.exceptions.ServiceOverloadedException
     bulkhead:
       instances:
         database:

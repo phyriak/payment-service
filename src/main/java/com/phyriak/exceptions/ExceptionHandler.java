@@ -58,15 +58,15 @@ public class ExceptionHandler {
                 .body(new PaymentApiResponse(null, "Internal server error"));
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(BulkheadFullException.class)
-    public ResponseEntity<String> handleBulkheadException(BulkheadFullException ex) {
+    @org.springframework.web.bind.annotation.ExceptionHandler(ServiceOverloadedException.class)
+    public ResponseEntity<String> handleServiceOverloadedException(ServiceOverloadedException ex) {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
-                .body("System is overloaded. Please try again later.");
+                .body("Payment service is temporarily overloaded. Please try again later.");
     }
 
     @org.springframework.web.bind.annotation.ExceptionHandler(ServiceOverloadedException.class)
-    public ResponseEntity<String> handleBulkHeadFallback(ServiceOverloadedException ex) {
+    public ResponseEntity<String> handleDataUnavailableException(DatabaseUnavailableException ex) {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
-                .body("System is overloaded. Please try again later.");
+                .body("Database is temporarily unavailable. Please try again later.");
     }
 }
