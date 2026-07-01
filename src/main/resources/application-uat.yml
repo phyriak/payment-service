@@ -2,26 +2,20 @@ server:
   port: 8082
   tomcat:
     threads:
-      max: 20
-      min-spare: 5
+      max: 20 # Max number of threads
+      min-spare: 5 # Min threads waiting when there is no requests, then 5->10->15->20
 
-    accept-count: 100
+    accept-count: 100 # Max request queue when all threads are occupied. If 101 request than -> timeout
 
-    max-connections: 200
+    max-connections: 200 # Max number of TCP connections which Tomcat will receive.
+    #Not all will be executed by Threads, some of them keep open connections - Keep-Alive. max-connections > maxThreads
 
     mbeanregistry:
-      enabled: true
+      enabled: true # Activate JMX MBEans for Tomcat for monitoring: Current threads, Busy Threads, Request Count
 
 spring:
   application:
     name: payment-service
-
-  kafka:
-    bootstrap-servers: kafka:9092
-
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
   datasource:
     url: ${DB_URL:jdbc:postgresql://localhost:5433/ecommerce?currentSchema=${DB_SCHEMA}}
@@ -30,11 +24,23 @@ spring:
     driver-class-name: org.postgresql.Driver
 
     hikari:
-      maximum-pool-size: 10
-      minimum-idle: 5
-      connection-timeout: 3000
-      idle-timeout: 600000
-      max-lifetime: 1800000
+      maximum-pool-size: 10 # Number of connections to db, if 11 requests than 1 is waiting
+      minimum-idle: 5 # Min ready connections
+      connection-timeout: 3000 # Max request waiting time for a db connection. If there is no connection after 3s -> SQLTransientConnectionException
+      # Reaching timeout means slow query, small pool, long transactions
+      idle-timeout: 600000 # If connections are not used after X min, Hikari can close it if reach idle-timeout
+      max-lifetime: 1800000 # Hikari close old connection
+
+
+  resilience4j:
+    circuitbreaker:
+      instances:
+        database:
+          slidingWindowSize: 20
+          failureRateThreshold: 50
+          waitDurationInOpenState: 10s
+          ignoreExceptions:
+            - com.example.exception.PaymentNotFoundException
 
   jpa:
     show-sql: false
@@ -65,6 +71,13 @@ spring:
 
     job:
       enabled: false
+
+  kafka:
+    bootstrap-servers: kafka:9092
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
 management:
   endpoints:

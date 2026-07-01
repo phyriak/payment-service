@@ -11,13 +11,14 @@ import com.phyriak.repository.PaymentRepository;
 import com.phyriak.repository.model.Currency;
 import com.phyriak.repository.model.Payment;
 import com.phyriak.repository.model.PaymentStatus;
-import com.phyriak.repository.model.ProductOrder;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.retry.annotation.Backoff;
+
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 
@@ -75,15 +76,21 @@ public class PaymentService {
         return multiplied;
     }
 
+
     public List<PaymentDto> getAllPayments() {
         return paymentRepository.findAll().stream()
                 .map(PaymentMapper.INSTANCE::paymentEntityToPaymentDto)
                 .toList();
     }
 
-
+    @CircuitBreaker(name = "database", fallbackMethod = "getPaymentFallback")
     public Payment getPaymentById(Long id) {
         return paymentRepository.findById(id)
                 .orElseThrow(() -> new PaymentNotFoundException("Payment with id: " + id + " does not exist!"));
+    }
+
+    public Payment getPaymentFallback(Exception ex) {
+        log.error("Database unavailable", ex);
+        return new Payment();
     }
 }
