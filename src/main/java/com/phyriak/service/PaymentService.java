@@ -84,7 +84,7 @@ public class PaymentService {
                 .toList();
     }
 
-    @Bulkhead(name = "database", type = Bulkhead.Type.SEMAPHORE, fallbackMethod = "fallback")
+    @Bulkhead(name = "database", type = Bulkhead.Type.SEMAPHORE, fallbackMethod = "getPaymentFallback")
     @CircuitBreaker(name = "database", fallbackMethod = "getPaymentFallback")
     public Payment getPaymentById(Long id) {
         return paymentRepository.findById(id)
