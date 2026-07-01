@@ -6,11 +6,13 @@ import com.phyriak.dto.PaymentDto;
 import com.phyriak.dto.PaymentRequest;
 import com.phyriak.exceptions.CurrencyNotFoundError;
 import com.phyriak.exceptions.PaymentNotFoundException;
+import com.phyriak.exceptions.ServiceOverloadedException;
 import com.phyriak.mapper.PaymentMapper;
 import com.phyriak.repository.PaymentRepository;
 import com.phyriak.repository.model.Currency;
 import com.phyriak.repository.model.Payment;
 import com.phyriak.repository.model.PaymentStatus;
+import io.github.resilience4j.bulkhead.BulkheadFullException;
 import io.github.resilience4j.bulkhead.annotation.Bulkhead;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import jakarta.transaction.Transactional;
@@ -93,6 +95,10 @@ public class PaymentService {
 
     public Payment getPaymentFallback(Long id, Throwable ex) {
         log.error("Fallback executed for id={}", id, ex);
-        return new Payment();
+
+        throw new ServiceOverloadedException(
+                "Payment service is temporarily overloaded",
+                ex
+        );
     }
 }

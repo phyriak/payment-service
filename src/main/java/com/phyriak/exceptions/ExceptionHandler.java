@@ -63,4 +63,10 @@ public class ExceptionHandler {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
                 .body("System is overloaded. Please try again later.");
     }
+
+    @org.springframework.web.bind.annotation.ExceptionHandler(ServiceOverloadedException.class)
+    public ResponseEntity<String> handleBulkHeadFallback(ServiceOverloadedException ex) {
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                .body("System is overloaded. Please try again later.");
+    }
 }
