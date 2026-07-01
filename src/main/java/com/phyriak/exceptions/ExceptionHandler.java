@@ -1,11 +1,9 @@
 package com.phyriak.exceptions;
 
 import com.phyriak.dto.PaymentApiResponse;
-import io.github.resilience4j.bulkhead.BulkheadFullException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -58,15 +56,12 @@ public class ExceptionHandler {
                 .body(new PaymentApiResponse(null, "Internal server error"));
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(ServiceOverloadedException.class)
-    public ResponseEntity<String> handleServiceOverloadedException(ServiceOverloadedException ex) {
+    @org.springframework.web.bind.annotation.ExceptionHandler({
+            ServiceOverloadedException.class,
+            DatabaseUnavailableException.class
+    })
+    public ResponseEntity<String> handleServiceUnavailable(RuntimeException ex) {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
                 .body("Payment service is temporarily overloaded. Please try again later.");
-    }
-
-    @org.springframework.web.bind.annotation.ExceptionHandler(ServiceOverloadedException.class)
-    public ResponseEntity<String> handleDataUnavailableException(DatabaseUnavailableException ex) {
-        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
-                .body("Database is temporarily unavailable. Please try again later.");
     }
 }
