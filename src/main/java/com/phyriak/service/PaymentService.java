@@ -11,6 +11,7 @@ import com.phyriak.repository.PaymentRepository;
 import com.phyriak.repository.model.Currency;
 import com.phyriak.repository.model.Payment;
 import com.phyriak.repository.model.PaymentStatus;
+import io.github.resilience4j.bulkhead.annotation.Bulkhead;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotBlank;
@@ -83,6 +84,7 @@ public class PaymentService {
                 .toList();
     }
 
+    @Bulkhead(name = "database", type = Bulkhead.Type.SEMAPHORE, fallbackMethod = "fallback")
     @CircuitBreaker(name = "database", fallbackMethod = "getPaymentFallback")
     public Payment getPaymentById(Long id) {
         return paymentRepository.findById(id)

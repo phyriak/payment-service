@@ -39,8 +39,14 @@ spring:
           slidingWindowSize: 20
           failureRateThreshold: 50
           waitDurationInOpenState: 10s
+          minimumNumberOfCalls: 10
           ignoreExceptions:
             - com.example.exception.PaymentNotFoundException
+    bulkhead:
+      instances:
+        database:
+          maxConcurrentCalls: 10
+          maxWaitDuration: 0ms
 
   jpa:
     show-sql: false
