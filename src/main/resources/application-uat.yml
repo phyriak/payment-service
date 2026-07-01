@@ -2,7 +2,7 @@ server:
   port: 8082
   tomcat:
     threads:
-      max: 20 # Max number of threads
+      max: 200 # Max number of threads
       min-spare: 5 # Min threads waiting when there is no requests, then 5->10->15->20
 
     accept-count: 100 # Max request queue when all threads are occupied. If 101 request than -> timeout

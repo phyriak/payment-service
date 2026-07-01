@@ -1,6 +1,7 @@
 package com.phyriak.exceptions;
 
 import com.phyriak.dto.PaymentApiResponse;
+import io.github.resilience4j.bulkhead.BulkheadFullException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,5 +56,11 @@ public class ExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new PaymentApiResponse(null, "Internal server error"));
+    }
+
+    @org.springframework.web.bind.annotation.ExceptionHandler(BulkheadFullException.class)
+    public ResponseEntity<String> handleBulkheadException(BulkheadFullException ex) {
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                .body("System is overloaded. Please try again later.");
     }
 }

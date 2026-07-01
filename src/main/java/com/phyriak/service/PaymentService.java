@@ -91,8 +91,8 @@ public class PaymentService {
                 .orElseThrow(() -> new PaymentNotFoundException("Payment with id: " + id + " does not exist!"));
     }
 
-    public Payment getPaymentFallback(Exception ex) {
-        log.error("Database unavailable", ex);
+    public Payment getPaymentFallback(Long id, Throwable ex) {
+        log.error("Fallback executed for id={}", id, ex);
         return new Payment();
     }
 }
