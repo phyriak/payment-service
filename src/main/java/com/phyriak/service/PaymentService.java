@@ -91,7 +91,7 @@ public class PaymentService {
     @Bulkhead(name = "database", type = Bulkhead.Type.SEMAPHORE, fallbackMethod = "bulkheadFallback")
     @CircuitBreaker(name = "database", fallbackMethod = "circuitBreakerFallback")
     public Payment getPaymentById(Long id) {
-        String traceId = RequestContext.getTradeId();
+        String traceId = RequestContext.getTraceId();
         log.info("Trace Id of the req: {}", traceId);
 
         return paymentRepository.findById(id)

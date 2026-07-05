@@ -1,26 +1,49 @@
 package com.phyriak.filter;
 
+import java.lang.ScopedValue;
+
 /**
- * Holds request-scoped data using {@link ThreadLocal}.
+ * Stores request-scoped context using {@link ScopedValue}.
  *
- * <p>Provides access to contextual information (e.g. trace ID)
- * for the current thread during request processing.</p>
+ * <p>Before Java 21, {@link ThreadLocal} was commonly used for this purpose.
+ * {@link ScopedValue} automatically clears the context when the execution scope
+ * ends, removing the need to manually call {@code ThreadLocal.remove()}.</p>
  */
-public class RequestContext {
+public final class RequestContext {
 
-    private static final ThreadLocal<String> TRACE_ID =
-            new ThreadLocal<>();
+    public static final ScopedValue<String> TRACE_ID =
+            ScopedValue.newInstance();
 
-    public static void set(String traceId) {
-        TRACE_ID.set(traceId);
+    private RequestContext() {
     }
 
-    public static String getTradeId() {
+
+    public static String getTraceId() {
         return TRACE_ID.get();
     }
 
-    public static void clear() {
-        TRACE_ID.remove();
-    }
+    /*
+     * Legacy approach (pre-Java 21).
+     *
+     * private static final ThreadLocal<String> TRACE_ID =
+     *         new ThreadLocal<>();
+     */
 
+
+    /*
+     * Legacy ThreadLocal API.
+     *
+     * public static void set(String traceId) {
+     *     TRACE_ID.set(traceId);
+     * }
+     */
+
+
+    /*
+     * Legacy ThreadLocal API.
+     *
+     * public static void clear() {
+     *     TRACE_ID.remove();
+     * }
+     */
 }

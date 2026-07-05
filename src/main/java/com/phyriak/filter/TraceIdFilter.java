@@ -26,21 +26,30 @@ public class TraceIdFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
-        try {
+        String traceId = request.getHeader("X-Trace-Id");
 
-            String traceId = request.getHeader("X-Trace-Id");
-
-            if (traceId == null || traceId.isBlank()) {
-                traceId = UUID.randomUUID().toString();
-            }
-
-            RequestContext.set(traceId);
-
-            filterChain.doFilter(request, response);
-
-        } finally {
-
-            RequestContext.clear();
+        if (traceId == null || traceId.isBlank()) {
+            traceId = UUID.randomUUID().toString();
         }
+
+        ScopedValue.where(RequestContext.TRACE_ID, traceId)
+                .run(() -> {
+                    try {
+                        filterChain.doFilter(request, response);
+                    } catch (ServletException | IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+
+        /*
+         * Legacy ThreadLocal implementation.
+         *
+         * try {
+         *     RequestContext.set(traceId);
+         *     filterChain.doFilter(request, response);
+         * } finally {
+         *     RequestContext.clear();
+         * }
+         */
     }
 }
