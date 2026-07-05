@@ -1,6 +1,7 @@
 package com.phyriak.service;
 
 import com.phyriak.config.NBPRateClient;
+import com.phyriak.filter.RequestContext;
 import com.phyriak.dto.NbpResponse;
 import com.phyriak.dto.PaymentDto;
 import com.phyriak.dto.PaymentRequest;
@@ -90,6 +91,9 @@ public class PaymentService {
     @Bulkhead(name = "database", type = Bulkhead.Type.SEMAPHORE, fallbackMethod = "bulkheadFallback")
     @CircuitBreaker(name = "database", fallbackMethod = "circuitBreakerFallback")
     public Payment getPaymentById(Long id) {
+        String traceId = RequestContext.getTradeId();
+        log.info("Trace Id of the req: {}", traceId);
+
         return paymentRepository.findById(id)
                 .orElseThrow(() -> new PaymentNotFoundException("Payment with id: " + id + " does not exist!"));
     }
