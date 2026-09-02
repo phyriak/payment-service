@@ -65,6 +65,9 @@ jobs:
             for i in {1..12}; do
               if curl -f http://localhost:8082/actuator/health; then
                 echo "Application is UP"
+            
+                docker image prune -af
+            
                 exit 0
               fi
   
